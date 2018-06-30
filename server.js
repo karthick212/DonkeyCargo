@@ -6,6 +6,7 @@ var mysql=require('mysql');
 var app=express();
 var bodyparser=require('body-parser');
 var dateformat=require('dateformat');
+var nodemailer = require('nodemailer'); 
 
 //parse all from data
 app.use(bodyparser.urlencoded({extended : true}));
@@ -31,6 +32,44 @@ app.use('/js',express.static(__dirname+'/node_modules/slimScroll'));
 app.use('/js',express.static(__dirname+'/node_modules/fastclick'));
 
 app.use('/css',express.static(__dirname+'/node_modules/adminlte/dist/css'));
+
+//Image files
+app.use(express.static(__dirname+'/img'));
+
+//Email
+
+var smtpConfig = {
+    host: 'smtpout.asia.secureserver.net',
+    port: 465,
+    secure: true, // use SSL
+    auth: {
+        user: 'info@donkeycargo.com',
+        pass: 'Donkey@123'
+    },
+    tls:{
+        secureProtocol: "TLSv1_method"
+    }
+};
+
+var transporter = nodemailer.createTransport(smtpConfig);
+
+var mailOptions = {
+  from: 'info@donkeycargo.com',
+  to: 'info@donkeycargo.com',
+  subject: 'Sending Email using Node.js',
+  text: 'That was easy!'
+};
+
+/*app.get('/',function(req,res){
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+  	console.log('dd');
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+}); 
+}); */
 
 
 //Database Connection string
@@ -162,7 +201,7 @@ app.get('/event/delete/:sid',function(req,res){
 
 
 //connect the server
-var server=app.listen(4000,function(){console.log('Server started on 4000....');})
+var server=app.listen(5000,function(){console.log('Server started on 5000....');})
 
 
 
